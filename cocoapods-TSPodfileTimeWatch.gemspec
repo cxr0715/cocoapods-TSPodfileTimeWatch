@@ -6,10 +6,12 @@ require 'cocoapods-TSPodfileTimeWatch/gem_version.rb'
 Gem::Specification.new do |spec|
   spec.name          = 'cocoapods-TSPodfileTimeWatch'
   spec.version       = CocoapodsTspodfiletimewatch::VERSION
-  spec.authors       = ['xueruicao']
-  spec.email         = ['xueruicao@tencent.com']
-  spec.description   = %q{A short description of cocoapods-TSPodfileTimeWatch.}
-  spec.summary       = %q{A longer description of cocoapods-TSPodfileTimeWatch.}
+  spec.authors       = ['keai']
+  spec.email         = ['604922471@qq.com']
+  spec.description   = %q{cocoapods-TSPodfileTimeWatch}
+  spec.summary       = <<-DESC
+                         cocoapods-TSPodfileTimeWatch
+                       DESC
   spec.homepage      = 'https://github.com/EXAMPLE/cocoapods-TSPodfileTimeWatch'
   spec.license       = 'MIT'
 
