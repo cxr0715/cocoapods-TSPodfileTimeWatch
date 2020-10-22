@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = <<-DESC
                          cocoapods-TSPodfileTimeWatch
                        DESC
-  spec.homepage      = 'https://github.com/EXAMPLE/cocoapods-TSPodfileTimeWatch'
+  spec.homepage      = 'https://github.com/cxr0715/cocoapods-TSPodfileTimeWatch'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
