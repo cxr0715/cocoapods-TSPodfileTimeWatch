@@ -40,7 +40,7 @@ module CocoapodsTSPodfileTimeWatch
           # 标红输出差值
           puts "\e[31mCocoapodsTSPodfileTimeWatch diffSize = #{diffSize}\e[0m"
           # 统计到csv中
-          CSV.open("/Users/caoxuerui/Desktop/AllPodsTimeAndSize2020_10_22.csv", "ab") do |csv|
+          CSV.open("#{Dir.home}/Desktop/AllPodsTimeAndSize.csv", "ab") do |csv|
             csv << [spec.name, $cloneTime, $gitSize, dirSum, diffSize]
           end
           # 换行
