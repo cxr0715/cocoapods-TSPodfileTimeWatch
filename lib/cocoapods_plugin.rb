@@ -33,7 +33,7 @@ module CocoapodsTSPodfileTimeWatch
     puts "\e[31mCocoapodsTSPodfileTimeWatch gitAllSize: #{$gitAllSize}M\e[0m"
     puts "\e[31mCocoapodsTSPodfileTimeWatch cloneAllTime: #{$cloneAllTime}S\e[0m"
     if $pluginIsVerbose == true
-      puts "\e[31m 具体的统计数据请在#{Dir.home}/.AllPodsTimeAndSize.csv中查看"
+      puts "\e[31m具体的统计数据请在#{Dir.home}/.AllPodsTimeAndSize.csv中查看\e[0m"
     end
   end
 
