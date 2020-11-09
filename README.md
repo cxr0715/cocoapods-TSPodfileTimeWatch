@@ -23,8 +23,10 @@
 
 5.在podfile中加入plugin "cocoapods-TSPodfileTimeWatch"
 
-6.pod结束后会在pods文件夹下生成AllPodsTimeAndSize.csv文件，用来记录所有pod下载耗时情况
+6.执行pod update --verbose（或者是pod install --verbose，但是一定要加--verbose，只有加了--verbose才会输出csv以及详细下载耗时信息）
 
-7.如果git clone文件大小和cache文件大的差值越大，说明下载的多余文件越多，则存在可优化空间。
+7.pod结束后会在pods文件夹下生成AllPodsTimeAndSize.csv文件，用来记录所有pod下载耗时情况
 
-8.可以通过尝试把podfile中使用git commit集成的，修改为使用git tag集成的方式，减少git clone下载内容
+8.如果git clone文件大小和cache文件大的差值越大，说明下载的多余文件越多，则存在可优化空间。
+
+9.可以通过尝试把podfile中使用git commit集成的，修改为使用git tag集成的方式，减少git clone下载内容
