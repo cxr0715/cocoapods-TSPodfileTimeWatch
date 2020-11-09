@@ -10,7 +10,7 @@ class Dir
         path = File.join(dir, entry)
         FileTest.directory?(path) ? sum += Dir.size(path) : sum += File.size(path)  
       rescue => exception
-        puts "\e[31mCocoapodsTSPodfileTimeWatch Dir.size error: #{exception}\e[0m"
+        puts "\e[31mCocoapodsTSPodfileTimeWatch Dir.size error(已捕获): #{exception}\e[0m"
         next
         retry
       end
@@ -29,11 +29,35 @@ end
 
 module CocoapodsTSPodfileTimeWatch
 
+  Pod::HooksManager.register("cocoapods-TSPodfileTimeWatch", :pre_install) do |context|
+    begin
+      if $pluginIsVerbose == true
+        # home路径下是否存在.AllPodsTimeAndSize.csv的隐藏文件
+        if File.exist?("#{Dir.home}/.AllPodsTimeAndSize.csv")
+          # 如果存在则先删除，每次都生成新的csv文件
+          File.delete("#{Dir.home}/.AllPodsTimeAndSize.csv")
+        end
+        # 统计到csv中
+        CSV.open("#{Dir.home}/.AllPodsTimeAndSize.csv", "ab") do |csv|
+          csv << ["名称", "下载耗时（S）", "git clone文件大小（M）", "cache文件大小（M）", "大小差值"]
+        end
+      end
+    rescue => exception
+      
+    end
+  end
   Pod::HooksManager.register("cocoapods-TSPodfileTimeWatch", :post_install) do |context|
-    puts "\e[31mCocoapodsTSPodfileTimeWatch gitAllSize: #{$gitAllSize}M\e[0m"
-    puts "\e[31mCocoapodsTSPodfileTimeWatch cloneAllTime: #{$cloneAllTime}S\e[0m"
-    if $pluginIsVerbose == true
-      puts "\e[31m具体的统计数据请在#{Dir.home}/.AllPodsTimeAndSize.csv中查看\e[0m"
+    begin
+      puts "\e[31mCocoapodsTSPodfileTimeWatch gitAllSize: #{$gitAllSize}M\e[0m"
+      puts "\e[31mCocoapodsTSPodfileTimeWatch cloneAllTime: #{$cloneAllTime}S\e[0m"
+      # 如果是--verbose模式且$gitAllSize与$cloneAllTime（不为0表示有下载pod）
+      if $pluginIsVerbose == true && $gitAllSize != 0 && $cloneAllTime != 0
+        File.rename "#{Dir.home}/.AllPodsTimeAndSize.csv", "#{context.sandbox_root}/AllPodsTimeAndSize.csv"
+        puts "\e[31m具体的统计数据请在#{context.sandbox_root}/AllPodsTimeAndSize.csv中查看\e[0m"
+      end
+    rescue => exception
+      # 如果没有下载则#{Dir.home}/.AllPodsTimeAndSize.csv文件不会生成，产生异常
+      puts "\e[31mCocoapodsTSPodfileTimeWatch post_install error(已捕获): #{exception}\e[0m"
     end
   end
 
@@ -49,7 +73,7 @@ module CocoapodsTSPodfileTimeWatch
       end
     end
 
-    # --verbose输出详细信息，生成在home路劲下AllPodsTimeAndSize.csv的隐藏文件
+    # --verbose输出详细信息，生成在home路径下.AllPodsTimeAndSize.csv的隐藏文件
     def verboseCopy_and_clean(source, destination, spec)
       begin
         # 计算拷贝到的目录下所有文件总大小，单位为M
@@ -61,14 +85,14 @@ module CocoapodsTSPodfileTimeWatch
         # 标红输出差值
         puts "\e[31mCocoapodsTSPodfileTimeWatch diffSize = #{diffSize}\e[0m"
         # 统计到csv中
-        CSV.open("#{Dir.home}/.AllPodsTimeAndSize.csv", "ab") do |csv|
+        CSV.open("#{Dir.home}/.AllPodsTimeAndSize.csv", "a+") do |csv|
           csv << [spec.name, $cloneTime, $gitSize, dirSum, diffSize]
         end
         # 换行
         puts
       rescue => exception
         # 输出拷贝清除方法异常
-        puts "\e[31mCocoapodsTSPodfileTimeWatch verboseCopy_and_clean error: #{exception}\e[0m"
+        puts "\e[31mCocoapodsTSPodfileTimeWatch verboseCopy_and_clean error(已捕获): #{exception}\e[0m"
       end
       $gitSize = 0
     end
@@ -106,7 +130,7 @@ module CocoapodsTSPodfileTimeWatch
         end
       rescue => exception
         # 标红输出git clone hook异常
-        puts "\e[31mCocoapodsTSPodfileTimeWatch clone error: #{exception}\e[0m"
+        puts "\e[31mCocoapodsTSPodfileTimeWatch clone error(已捕获): #{exception}\e[0m"
       end
 
     end
