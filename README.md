@@ -21,7 +21,18 @@
 
 4.删除pod缓存（pod cache clean --all）
 
-5.在podfile中加入plugin "cocoapods-TSPodfileTimeWatch"
+5.在podfile起始加入：
+
+```ruby
+# 在这里判断是否启动插件，再加个异常保护
+begin
+  if system "gem list | grep \"cocoapods-TSPodfileTimeWatch\""
+    # 判断是否有装cocoapods-TSPodfileTimeWatch插件
+    plugin "cocoapods-TSPodfileTimeWatch"
+  end
+  # 其他plugin...
+end
+```
 
 6.执行pod update --verbose（或者是pod install --verbose，但是一定要加--verbose，只有加了--verbose才会输出csv以及详细下载耗时信息）
 
