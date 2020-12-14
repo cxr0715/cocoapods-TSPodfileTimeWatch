@@ -13,6 +13,7 @@
 $ gem install cocoapods-TSPodfileTimeWatch
 ```
 
+所有功能实现都在/CocoaPods/cocoapods-TSPodfileTimeWatch/lib/cocoapods_plugin.rb文件中
 目前版本0.0.6（加入CDN耗时统计）--2020.12.14
 
 ## 使用方法
