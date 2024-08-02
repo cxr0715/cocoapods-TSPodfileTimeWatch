@@ -79,8 +79,13 @@ module CocoapodsTSPodfileTimeWatch
     # 使用方法别名hook copy_and_clean方法
     alias :origin_copy_and_clean :copy_and_clean
     def copy_and_clean(source, destination, spec)
+      time1 = Time.new
       # 执行之前的拷贝到cache并且清除git clone临时目录的方法
       origin_copy_and_clean(source, destination, spec)
+      time2 = Time.new
+      # 获取时间差
+      time = time2 - time1
+      puts "\e[31mCocoapodsTSPodfileTimeWatch #{spec.name} copy_and_clean time: #{time}"+" S\e[0m"
       # 如果是--verbose，则输出详细信息，生成csv
       if $pluginIsVerbose == true
         verboseCopy_and_clean(source, destination, spec)
